@@ -1,6 +1,37 @@
 import express from "express"
-
+import jwt from "jsonwebtoken"
+import { CustomReq, middleware } from "./middlewares";
 const app = express()
+
+app.post('/signup',(req,res)=>{
+    const {email,password}= req.body;
+
+   res.json({ //should add db logic here
+    id:1
+   })
+})
+
+app.post("/signin", (req, res) => {
+  const { email, password } = req.body;
+
+  const token = jwt.sign(
+    {
+      email,
+    },
+    "121212"
+  );
+
+  res.json({
+    token,
+  });
+});
+
+app.post("/room",middleware, (req:CustomReq, res) => {
+  const email = req.email;
+  res.json({
+    email  
+  })  //should be a db call
+});
 
 app.listen(3001,()=>{
     console.log("server is running on the port 3001")
