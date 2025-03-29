@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 
 import jwt, { JwtPayload } from "jsonwebtoken";
-
+import { JWT_SECRET } from "@repo/common-backend/config";
 export interface CustomReq extends Request {
   email?: string;
 }
@@ -18,7 +18,7 @@ export function middleware(
     return;
   }
 
-  const decoded = jwt.verify(token, "121212") as JwtPayload;
+  const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
   if (decoded.email) {
     //db logic
