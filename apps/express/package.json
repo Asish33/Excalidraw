@@ -16,6 +16,9 @@
     "jsonwebtoken": "^9.0.2",
     "@repo/common-backend":"workspace:*"
   },
+  "devDependencies": {
+    "@repo/common":"workspace:*"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
