@@ -2,6 +2,8 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import { CustomReq, middleware } from "./middlewares";
 const app = express()
+app.use(express.json())
+
 
 app.post('/signup',(req,res)=>{
     const {email,password}= req.body;
