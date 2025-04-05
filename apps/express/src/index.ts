@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { CustomReq, middleware } from "./middlewares.js";
 import { JWT_SECRET } from "@repo/backend-common/config";
-import { UserSchema, SigninSchema } from "@repo/common/types";
+import { UserSchema, SigninSchema, RoomSchema } from "@repo/common/types";
 import { prismaClient } from "@repo/db/client";
 
 const app = express();
@@ -58,7 +58,7 @@ app.post("/signin", async (req, res) => {
     try {
       const token = jwt.sign(
         {
-          ans,
+          id:ans,
         },
         JWT_SECRET
       );
@@ -83,18 +83,29 @@ app.post("/signin", async (req, res) => {
 
 app.post("/room", middleware, async (req: CustomReq, res) => {
   const { id } = req;
+  const parsedData = RoomSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    res.json({
+      message: "name for room is not given by the user",
+    });
+    return;
+  }
   if (!id) {
     res.json({
       message: "unauthorized",
     });
     return;
   }
-  const room = prismaClient.room.create({
+  const room = await prismaClient.room.create({
     data: {
       adminId: id,
-      slug: "123",
+      slug: parsedData.data?.name,
     },
   });
+
+  res.json({
+    message:"room is created successfully"
+  })
 });
 
 app.listen(3001, () => {

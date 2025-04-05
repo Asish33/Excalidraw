@@ -12,8 +12,8 @@ export async function middleware(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const token = req.headers["authorization"];
-  JWT_SECRET;
+  const token = req.headers["Authorization"];
+
   if (!token) {
     res.status(401).json({ message: "Unauthorized: No token provided" });
     return;
