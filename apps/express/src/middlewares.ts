@@ -12,7 +12,7 @@ export async function middleware(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const token = req.headers["Authorization"];
+  const token = req.headers["authorization"];
 
   if (!token) {
     res.status(401).json({ message: "Unauthorized: No token provided" });

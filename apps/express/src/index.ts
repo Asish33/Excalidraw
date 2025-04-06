@@ -58,7 +58,7 @@ app.post("/signin", async (req, res) => {
     try {
       const token = jwt.sign(
         {
-          id:ans,
+          id: ans,
         },
         JWT_SECRET
       );
@@ -96,16 +96,24 @@ app.post("/room", middleware, async (req: CustomReq, res) => {
     });
     return;
   }
-  const room = await prismaClient.room.create({
-    data: {
-      adminId: id,
-      slug: parsedData.data?.name,
-    },
-  });
+  try {
+    const room = await prismaClient.room.create({
+      data: {
+        adminId: id,
+        slug: parsedData.data?.name,
+      },
+    });
 
-  res.json({
-    message:"room is created successfully"
-  })
+    res.json({
+      message: "room is created successfully",
+      roomId: room.id,
+    });
+  } catch (e) {
+    res.json({
+      message:"Room already exists with the given room name"
+    })
+    return;
+  }
 });
 
 app.listen(3001, () => {
